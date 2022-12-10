@@ -57,7 +57,7 @@ impl<T: ServicePair + Clone> Client<T> {
     }
 }
 
-pub async fn client<T: ServicePair>(service: &'static str) -> Result<Client<T>, rosrust::error::Error> {
+pub async fn client<T: ServicePair + Clone>(service: &'static str) -> Result<Client<T>, rosrust::error::Error> {
     spawn_blocking(move || {
         rosrust::client::<T>(service)
     }).await.unwrap().map(|cl| Client { inner: Arc::new(cl) })
