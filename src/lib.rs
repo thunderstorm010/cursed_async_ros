@@ -44,11 +44,11 @@ pub async fn service<T: rosrust::ServicePair, F: Fn(T::Request) -> Result<T::Res
 }
 
 #[derive(Clone)]
-pub struct Client<T: ServicePair> {
+pub struct Client<T: ServicePair + Clone> {
     inner: Arc<rosrust::Client<T>>
 }
 
-impl<T: ServicePair> Client<T> {
+impl<T: ServicePair + Clone> Client<T> {
     pub async fn req(&self, args: T::Request) -> rosrust::error::tcpros::Result<Result<T::Response, String>> {
        let inner = self.inner.clone();
         spawn_blocking(move || {
