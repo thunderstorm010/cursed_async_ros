@@ -43,6 +43,7 @@ pub async fn service<T: rosrust::ServicePair, F: Fn(T::Request) -> Result<T::Res
     }).await.unwrap()
 }
 
+#[derive(Clone)]
 pub struct Client<T: ServicePair> {
     inner: Arc<rosrust::Client<T>>
 }
