@@ -1,10 +1,13 @@
 pub use rosrust;
 
 use async_stream::stream;
-use rosrust::Subscriber;
+use rosrust::{Subscriber, Service};
 use tokio::{sync::mpsc, task::spawn_blocking};
 pub use tokio_stream;
 use tokio_stream::Stream;
+
+
+
 
 pub async fn subscribe<T: rosrust::Message>(
     topic: &'static str,
@@ -27,4 +30,13 @@ pub async fn subscribe<T: rosrust::Message>(
     };
 
     (stream, result)
+}
+
+pub async fn service<T: rosrust::ServicePair, F: Fn(T::Request) -> Result<T::Response, String> + Send + Sync + 'static> (
+    service: &'static str,
+    callback: F
+) -> Result<Service, rosrust::error::Error> {
+    spawn_blocking(move || {
+        rosrust::service::<T, F>(service, callback)
+    }).await.unwrap()
 }

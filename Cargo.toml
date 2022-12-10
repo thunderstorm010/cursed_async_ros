@@ -15,3 +15,5 @@ tokio-stream = "0.1"
 rosrust = { version = "0.9"}
 rosrust_msg = "0.1"
 async-stream = "0.3"
+thiserror = "1.0.37"
+anyhow = "1.0.66"
