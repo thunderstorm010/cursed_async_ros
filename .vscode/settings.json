@@ -1,0 +1,10 @@
+{
+    "rust-analyzer.checkOnSave.overrideCommand": [
+        "bash",
+        "/home/thunderstorm010/calrov_topside/override.sh"
+    ],
+    "rust-analyzer.cargo.buildScripts.overrideCommand": [
+        "bash",
+        "/home/thunderstorm010/calrov_topside/override.sh"
+    ],
+}

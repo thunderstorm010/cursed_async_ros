@@ -1,0 +1,17 @@
+[package]
+name = "cursed_async_ros"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[features]
+default = ["tokio_multithread_rt"]
+tokio_multithread_rt = ["tokio/rt-multi-thread"]
+
+[dependencies]
+tokio = { version = "1.0", features = ["sync", "rt-multi-thread"]}
+tokio-stream = "0.1"
+rosrust = { version = "0.9"}
+rosrust_msg = "0.1"
+async-stream = "0.3"
