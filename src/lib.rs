@@ -26,7 +26,7 @@ pub async fn subscribe<T: rosrust::Message>(
     .unwrap();
 
     let stream = stream! {
-        for msg in rx.recv().await {
+        while let Some(msg) = rx.recv().await {
             yield msg;
         }
     };
