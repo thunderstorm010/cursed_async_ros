@@ -14,7 +14,7 @@ use tokio_stream::Stream;
 pub async fn subscribe<T: rosrust::Message>(
     topic: &'static str,
     queue_size: usize,
-) -> (impl Stream<Item = T>, rosrust::error::Result<Subscriber>) {
+) -> rosrust::error::Result<(impl Stream<Item = T>, Subscriber)> {
     let (tx, mut rx) = mpsc::channel::<T>(100);
 
     let result = spawn_blocking(move || {
@@ -22,8 +22,7 @@ pub async fn subscribe<T: rosrust::Message>(
             tx.blocking_send(message).unwrap();
         })
     })
-    .await
-    .unwrap();
+    .await.unwrap()?;
 
     let stream = stream! {
         while let Some(msg) = rx.recv().await {
@@ -31,7 +30,7 @@ pub async fn subscribe<T: rosrust::Message>(
         }
     };
 
-    (stream, result)
+    Ok((stream, result))
 }
 
 pub async fn service<T: rosrust::ServicePair, F: Fn(T::Request) -> Result<T::Response, String> + Send + Sync + 'static> (
